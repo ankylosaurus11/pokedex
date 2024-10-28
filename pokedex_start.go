@@ -11,7 +11,7 @@ func pokedexStart() {
 	for {
 		fmt.Println("pokedex >")
 		scanner.Scan()
-		userInput := reader.Text()
+		userInput := scanner.Text()
 		if len(userInput) == 0 {
 			continue
 		}
@@ -30,22 +30,22 @@ func pokedexStart() {
 }
 
 type cliCommand struct {
-	name		string
+	name        string
 	description string
-	callback 	func() error
+	callback    func() error
 }
 
 func commands() map[string]cliCommand {
 	return map[string]cliCommand{
 		"help": {
-			name:		"help",
-			description:"provides a list of commands",
-			callback: 	commandHelp
+			name:        "help",
+			description: "provides a list of commands",
+			callback:    help,
 		},
 		"exit": {
-			name:		"exit",
-			description:"exits program",
-			callback:	commandExit
-		}
+			name:        "exit",
+			description: "exits program",
+			callback:    exit,
+		},
 	}
 }
