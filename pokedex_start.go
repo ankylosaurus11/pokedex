@@ -18,3 +18,24 @@ func pokedexStart() {
 		fmt.Println(sentence)
 	}
 }
+
+type cliCommand struct {
+	name		string
+	description string
+	callback 	func() error
+}
+
+func commands() map[string]cliCommand {
+	return map[string]cliCommand{
+		"help" {
+			name:		"help",
+			description:"provides a list of commands",
+			callback: 	commandHelp
+		},
+		"exit" {
+			name:		"exit",
+			description:"exits program",
+			callback:	commandExit
+		}
+	}
+}
