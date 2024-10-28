@@ -7,15 +7,25 @@ import (
 )
 
 func pokedexStart() {
-	responseCall := bufio.NewReader(os.Stdin)
-	fmt.Println("pokedex >")
-	sentence, err := responseCall.ReadString('\n')
-	if err != nil {
-		fmt.Println(err)
-	} else if sentence == "help\n" {
-		help()
-	} else {
-		fmt.Println(sentence)
+	scanner := bufio.NewScanner(os.Stdin)
+	for {
+		fmt.Println("pokedex >")
+		scanner.Scan()
+		userInput := reader.Text()
+		if len(userInput) == 0 {
+			continue
+		}
+		command, exists := commands()[userInput]
+		if exists {
+			err := command.callback()
+			if err != nil {
+				fmt.Println(err)
+			}
+			continue
+		} else {
+			fmt.Println("not a valid command, please try 'help'")
+			continue
+		}
 	}
 }
 
@@ -27,12 +37,12 @@ type cliCommand struct {
 
 func commands() map[string]cliCommand {
 	return map[string]cliCommand{
-		"help" {
+		"help": {
 			name:		"help",
 			description:"provides a list of commands",
 			callback: 	commandHelp
 		},
-		"exit" {
+		"exit": {
 			name:		"exit",
 			description:"exits program",
 			callback:	commandExit
