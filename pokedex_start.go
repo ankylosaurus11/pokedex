@@ -35,6 +35,12 @@ type cliCommand struct {
 	callback    func() error
 }
 
+type apiConfig struct {
+	count    int
+	next     string
+	previous string
+}
+
 func commands() map[string]cliCommand {
 	return map[string]cliCommand{
 		"help": {
@@ -47,5 +53,15 @@ func commands() map[string]cliCommand {
 			description: "exits program",
 			callback:    exit,
 		},
+		"map": {
+			name:        "map",
+			description: "shows first 20 locations",
+			callback:    mapf,
+		},
+		/*"mapb": {
+			name:        "mapb",
+			description: "shows previous 20 locations",
+			callback:    mapb,
+		},*/
 	}
 }
