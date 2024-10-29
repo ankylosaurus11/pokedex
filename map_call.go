@@ -9,7 +9,7 @@ import (
 )
 
 func mapf() error {
-	res, err := http.Get("https://pokeapi.co/api/v2/location?limit=5")
+	res, err := http.Get("https://pokeapi.co/api/v2/location?limit=20")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -21,21 +21,17 @@ func mapf() error {
 	if err != nil {
 		log.Fatal(err)
 	}
-	var result interface{}
-	err = json.Unmarshal(body, &result)
-	/*if err := json.NewDecoder(res.Body).Decode(&result); err != nil {
-		log.Fatalf("error decoding json: %v", err)
-	}*/
+	var apiConfig apiConfig
+
+	err = json.Unmarshal(body, &apiConfig)
+
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	/*data, err := json.MarshalIndent(result, "", "  ")
-	if err != nil {
-		log.Fatalf("error marshalling json: %v", err)
-	}*/
-
-	fmt.Println(result)
+	for _, location := range apiConfig.Results {
+		fmt.Printf("name: %s\n", location.Name)
+	}
 
 	return nil
 }

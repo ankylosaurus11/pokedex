@@ -36,9 +36,15 @@ type cliCommand struct {
 }
 
 type apiConfig struct {
-	count    int
-	next     string
-	previous string
+	Count    int        `json:"count"`
+	Next     string     `json:"next"`
+	Previous *string    `json:"previous"`
+	Results  []location `json:"results"`
+}
+
+type location struct {
+	Name string `json:"name"`
+	URL  string `json:"url"`
 }
 
 func commands() map[string]cliCommand {
