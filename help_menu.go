@@ -4,7 +4,7 @@ import (
 	"fmt"
 )
 
-func help() error {
+func help(_ *config) error {
 	fmt.Println("helpmenu:")
 	for _, cmd := range commands() {
 		fmt.Printf("%s: %s\n", cmd.name, cmd.description)

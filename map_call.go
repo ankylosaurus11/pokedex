@@ -8,8 +8,14 @@ import (
 	"net/http"
 )
 
-func mapf() error {
-	res, err := http.Get("https://pokeapi.co/api/v2/location?limit=20")
+func mapf(cfg *config) error {
+	url := ""
+	if cfg.NextURL == "" {
+		url = "https://pokeapi.co/api/v2/location?limit=20"
+	} else {
+		url = cfg.NextURL
+	}
+	res, err := http.Get(url)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -24,13 +30,13 @@ func mapf() error {
 	var apiConfig apiConfig
 
 	err = json.Unmarshal(body, &apiConfig)
-
+	cfg.NextURL = apiConfig.Next
 	if err != nil {
 		fmt.Println(err)
 	}
 
 	for _, location := range apiConfig.Results {
-		fmt.Printf("name: %s\n", location.Name)
+		fmt.Printf("location name: %s\n", location.Name)
 	}
 
 	return nil

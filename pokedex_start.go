@@ -8,6 +8,9 @@ import (
 
 func pokedexStart() {
 	scanner := bufio.NewScanner(os.Stdin)
+	cfg := config{
+		NextURL: "",
+	}
 	for {
 		fmt.Println("pokedex >")
 		scanner.Scan()
@@ -17,7 +20,7 @@ func pokedexStart() {
 		}
 		command, exists := commands()[userInput]
 		if exists {
-			err := command.callback()
+			err := command.callback(&cfg)
 			if err != nil {
 				fmt.Println(err)
 			}
@@ -29,10 +32,14 @@ func pokedexStart() {
 	}
 }
 
+type config struct {
+	NextURL string
+}
+
 type cliCommand struct {
 	name        string
 	description string
-	callback    func() error
+	callback    func(*config) error
 }
 
 type apiConfig struct {
