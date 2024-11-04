@@ -9,8 +9,10 @@ import (
 func pokedexStart() {
 	scanner := bufio.NewScanner(os.Stdin)
 	cfg := config{
-		NextURL: "",
+		NextURL:     "",
+		PreviousURL: nil,
 	}
+
 	for {
 		fmt.Println("pokedex >")
 		scanner.Scan()
@@ -33,7 +35,8 @@ func pokedexStart() {
 }
 
 type config struct {
-	NextURL string
+	NextURL     string
+	PreviousURL *string
 }
 
 type cliCommand struct {
@@ -71,10 +74,10 @@ func commands() map[string]cliCommand {
 			description: "shows first 20 locations",
 			callback:    mapf,
 		},
-		/*"mapb": {
+		"mapb": {
 			name:        "mapb",
 			description: "shows previous 20 locations",
 			callback:    mapb,
-		},*/
+		},
 	}
 }

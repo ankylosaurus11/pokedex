@@ -31,6 +31,7 @@ func mapf(cfg *config) error {
 
 	err = json.Unmarshal(body, &apiConfig)
 	cfg.NextURL = apiConfig.Next
+	cfg.PreviousURL = apiConfig.Previous
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -42,6 +43,28 @@ func mapf(cfg *config) error {
 	return nil
 }
 
-//func mapb() error {
+func mapb(cfg *config) error {
+	url := ""
+	if *cfg.PreviousURL == "" {
+		fmt.Println("you are at the start of the list")
+		return nil
+	} else {
+		url = *cfg.PreviousURL
+	}
+	res, err := http.Get(url)
+	if err != nil {
+		fmt.Println(err)
+	}
+	body, err := io.ReadAll(res.Body)
+	defer res.Body.Close()
 
-//}
+	var apiConfig apiConfig
+	err = json.Unmarshal(body, &apiConfig)
+	cfg.NextURL = apiConfig.Next
+	cfg.PreviousURL = apiConfig.Previous
+	for _, location := range apiConfig.Results {
+		fmt.Printf("location name: %s\n", location.Name)
+	}
+
+	return nil
+}
