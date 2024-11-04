@@ -6,9 +6,11 @@ import (
 	"io"
 	"log"
 	"net/http"
+
+	"github.com/ankylosaurus11/pokedex/internal/pokecache"
 )
 
-func mapf(cfg *config) error {
+func mapf(cfg *config, cache *pokecache.Cache) error {
 	url := ""
 	if cfg.NextURL == "" {
 		url = "https://pokeapi.co/api/v2/location?limit=20"
@@ -43,7 +45,7 @@ func mapf(cfg *config) error {
 	return nil
 }
 
-func mapb(cfg *config) error {
+func mapb(cfg *config, cache *pokecache.Cache) error {
 	url := ""
 	if *cfg.PreviousURL == "" {
 		fmt.Println("you are at the start of the list")

@@ -4,14 +4,12 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+
+	"github.com/ankylosaurus11/pokedex/internal/pokecache"
 )
 
-func pokedexStart() {
+func pokedexStart(cfg config, cache *pokecache.Cache) {
 	scanner := bufio.NewScanner(os.Stdin)
-	cfg := config{
-		NextURL:     "",
-		PreviousURL: nil,
-	}
 
 	for {
 		fmt.Println("pokedex >")
@@ -22,7 +20,7 @@ func pokedexStart() {
 		}
 		command, exists := commands()[userInput]
 		if exists {
-			err := command.callback(&cfg)
+			err := command.callback(&cfg, cache)
 			if err != nil {
 				fmt.Println(err)
 			}
@@ -42,7 +40,7 @@ type config struct {
 type cliCommand struct {
 	name        string
 	description string
-	callback    func(*config) error
+	callback    func(*config, *pokecache.Cache) error
 }
 
 type apiConfig struct {

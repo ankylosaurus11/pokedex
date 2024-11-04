@@ -1,5 +1,16 @@
 package main
 
+import (
+	"time"
+
+	"github.com/ankylosaurus11/pokedex/internal/pokecache"
+)
+
 func main() {
-	pokedexStart()
+	cache := pokecache.NewCache(5 * time.Minute)
+	cfg := config{
+		NextURL:     "",
+		PreviousURL: nil,
+	}
+	pokedexStart(cfg, &cache)
 }
