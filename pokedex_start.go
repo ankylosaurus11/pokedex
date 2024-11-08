@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/ankylosaurus11/pokedex/internal/pokecache"
 )
@@ -15,12 +16,16 @@ func pokedexStart(cfg config, cache *pokecache.Cache) {
 		fmt.Println("pokedex >")
 		scanner.Scan()
 		userInput := scanner.Text()
+		words := strings.Split(userInput, " ")
+		commandName := words[0]
+		args := words[1:]
+
 		if len(userInput) == 0 {
 			continue
 		}
-		command, exists := commands()[userInput]
+		command, exists := commands()[commandName]
 		if exists {
-			err := command.callback(&cfg, cache)
+			err := command.callback(&cfg, cache, args...)
 			if err != nil {
 				fmt.Println(err)
 			}
@@ -40,7 +45,7 @@ type config struct {
 type cliCommand struct {
 	name        string
 	description string
-	callback    func(*config, *pokecache.Cache) error
+	callback    func(*config, *pokecache.Cache, ...string) error
 }
 
 type apiConfig struct {

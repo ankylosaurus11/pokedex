@@ -1,12 +1,10 @@
 package main
 
 import (
-	"bufio"
 	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
-	"os"
 
 	"github.com/ankylosaurus11/pokedex/internal/pokecache"
 )
@@ -23,14 +21,9 @@ type LocationArea struct {
 	PokemonEncounters []PokemonEncounter `json:"pokemon_encounters"`
 }
 
-func explore(cfg *config, cache *pokecache.Cache) error {
-	scanner := bufio.NewScanner(os.Stdin)
-	fmt.Println("Enter location name:")
-	scanner.Scan()
-	location := scanner.Text()
-
-	locationUrl := "https://pokeapi.co/api/v2/location-area/" + location
-	res, err := http.Get(locationUrl)
+func explore(cfg *config, cache *pokecache.Cache, locationName ...string) error {
+	url := "https://pokeapi.co/api/v2/location-area/" + locationName[0]
+	res, err := http.Get(url)
 	if err != nil {
 		log.Fatal(err)
 	}

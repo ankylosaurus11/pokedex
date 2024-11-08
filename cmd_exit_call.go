@@ -6,7 +6,7 @@ import (
 	"os"
 )
 
-func exit(_ *config, _ *pokecache.Cache) error {
+func exit(_ *config, _ *pokecache.Cache, _ ...string) error {
 	os.Exit(0)
 	return nil
 }

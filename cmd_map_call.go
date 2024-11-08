@@ -10,11 +10,11 @@ import (
 	"github.com/ankylosaurus11/pokedex/internal/pokecache"
 )
 
-func mapf(cfg *config, cache *pokecache.Cache) error {
+func mapf(cfg *config, cache *pokecache.Cache, _ ...string) error {
 	url := ""
 
 	if cfg.NextURL == "" {
-		url = "https://pokeapi.co/api/v2/location?limit=20"
+		url = "https://pokeapi.co/api/v2/location-area?limit=20"
 	} else {
 		url = cfg.NextURL
 	}
@@ -57,7 +57,7 @@ func mapf(cfg *config, cache *pokecache.Cache) error {
 	cfg.NextURL = apiConfig.Next
 	cfg.PreviousURL = apiConfig.Previous
 
-	cache.Add(url, body)
+	cache.Add("locations", body)
 
 	if err != nil {
 		fmt.Println(err)
@@ -70,7 +70,7 @@ func mapf(cfg *config, cache *pokecache.Cache) error {
 	return nil
 }
 
-func mapb(cfg *config, cache *pokecache.Cache) error {
+func mapb(cfg *config, cache *pokecache.Cache, _ ...string) error {
 	url := ""
 	if *cfg.PreviousURL == "" {
 		fmt.Println("you are at the start of the list")
@@ -109,7 +109,7 @@ func mapb(cfg *config, cache *pokecache.Cache) error {
 	cfg.NextURL = apiConfig.Next
 	cfg.PreviousURL = apiConfig.Previous
 
-	cache.Add(url, body)
+	cache.Add("locations", body)
 
 	for _, location := range apiConfig.Results {
 		fmt.Printf("location name: %s\n", location.Name)
