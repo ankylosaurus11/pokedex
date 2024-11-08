@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"log"
@@ -72,9 +73,8 @@ func mapf(cfg *config, cache *pokecache.Cache, _ ...string) error {
 
 func mapb(cfg *config, cache *pokecache.Cache, _ ...string) error {
 	url := ""
-	if *cfg.PreviousURL == "" {
-		fmt.Println("you are at the start of the list")
-		return nil
+	if cfg.PreviousURL == nil || *cfg.PreviousURL == "" {
+		return errors.New("you are at the start of the list")
 	} else {
 		url = *cfg.PreviousURL
 	}

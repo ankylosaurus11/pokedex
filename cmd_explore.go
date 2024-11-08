@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
 
 	"github.com/ankylosaurus11/pokedex/internal/pokecache"
@@ -25,15 +24,15 @@ func explore(cfg *config, cache *pokecache.Cache, locationName ...string) error 
 	url := "https://pokeapi.co/api/v2/location-area/" + locationName[0]
 	res, err := http.Get(url)
 	if err != nil {
-		log.Fatal(err)
+		return fmt.Errorf("location area '%s' not found - please try a valid location", locationName[0])
 	}
 
 	defer res.Body.Close()
 	if res.StatusCode > 299 {
-		log.Fatalf("response failed with status code: %d", res.StatusCode)
+		return fmt.Errorf("response failed with status code: %d -  please try a valid location", res.StatusCode)
 	}
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 	var locationArea LocationArea
 
