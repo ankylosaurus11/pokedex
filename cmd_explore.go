@@ -22,6 +22,22 @@ type LocationArea struct {
 
 func explore(cfg *config, cache *pokecache.Cache, locationName ...string) error {
 	url := "https://pokeapi.co/api/v2/location-area/" + locationName[0]
+	if cachedData, ok := cache.Get(url); ok {
+		fmt.Println("Cache hit!")
+		var locationArea LocationArea
+
+		err := json.Unmarshal(cachedData, &locationArea)
+		if err != nil {
+			return err
+		}
+		fmt.Println("Found Pokemon:")
+		for _, pokemon := range locationArea.PokemonEncounters {
+			fmt.Println(" - ", pokemon.Pokemon.Name)
+		}
+
+		return nil
+	}
+	fmt.Println("Cache Miss!")
 	res, err := http.Get(url)
 	if err != nil {
 		return fmt.Errorf("location area '%s' not found - please try a valid location", locationName[0])
@@ -43,6 +59,13 @@ func explore(cfg *config, cache *pokecache.Cache, locationName ...string) error 
 	for _, pokemon := range locationArea.PokemonEncounters {
 		fmt.Println(" - ", pokemon.Pokemon.Name)
 	}
+
+	jsonData, err := json.Marshal(locationArea)
+	if err != nil {
+		return err
+	}
+
+	cache.Add(url, jsonData)
 
 	return nil
 }
