@@ -102,10 +102,16 @@ func mapb(cfg *config, cache *pokecache.Cache, _ ...string) error {
 		fmt.Println(err)
 	}
 	body, err := io.ReadAll(res.Body)
+	if err != nil {
+		return err
+	}
 	defer res.Body.Close()
 
 	var apiConfig apiConfig
 	err = json.Unmarshal(body, &apiConfig)
+	if err != nil {
+		return err
+	}
 	cfg.NextURL = apiConfig.Next
 	cfg.PreviousURL = apiConfig.Previous
 

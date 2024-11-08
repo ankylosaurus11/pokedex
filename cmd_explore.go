@@ -31,9 +31,7 @@ func explore(cfg *config, cache *pokecache.Cache, locationName ...string) error 
 	if res.StatusCode > 299 {
 		return fmt.Errorf("response failed with status code: %d -  please try a valid location", res.StatusCode)
 	}
-	if err != nil {
-		return err
-	}
+
 	var locationArea LocationArea
 
 	err = json.NewDecoder(res.Body).Decode(&locationArea)
