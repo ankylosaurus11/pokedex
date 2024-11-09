@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"log"
 	"net/http"
 
 	"github.com/ankylosaurus11/pokedex/internal/pokecache"
@@ -42,15 +41,15 @@ func mapf(cfg *config, cache *pokecache.Cache, _ ...string) error {
 
 	res, err := http.Get(url)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 	body, err := io.ReadAll(res.Body)
 	defer res.Body.Close()
 	if res.StatusCode > 299 {
-		log.Fatalf("response failed with status code: %d and \nbody: %s\n", res.StatusCode, body)
+		fmt.Errorf("response failed with status code: %d and \nbody: %s\n", res.StatusCode, body)
 	}
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 	var apiConfig apiConfig
 
