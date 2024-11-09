@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"math/rand"
 	"net/http"
 
 	"github.com/ankylosaurus11/pokedex/internal/pokecache"
@@ -17,6 +18,10 @@ type PokeSuite struct {
 		Name string `json:"name"`
 		URL  string `json:"url"`
 	} `json:"results"`
+}
+
+type PokemonData struct {
+	BaseExperience int `json:"base_experience"`
 }
 
 func catch(cfg *config, cache *pokecache.Cache, pokemon ...string) error {
@@ -36,6 +41,28 @@ func catch(cfg *config, cache *pokecache.Cache, pokemon ...string) error {
 				continue
 			}
 			fmt.Println("Pokemon found!")
+			res, err := http.Get(pokemonCatch.URL)
+			if err != nil {
+				return err
+			}
+			defer res.Body.Close()
+			var pokemonData PokemonData
+			err = json.NewDecoder(res.Body).Decode(&pokemonData)
+			if err != nil {
+				return err
+			}
+
+			fmt.Println(pokemonData.BaseExperience)
+
+			throwPokeBall := rand.Intn(301)
+			fmt.Println(throwPokeBall)
+			if throwPokeBall >= pokemonData.BaseExperience {
+				fmt.Println("Throwing a Pokeball at " + pokemon[0] + "...")
+				fmt.Println(pokemon[0] + " was caught!")
+			} else {
+				fmt.Println("Throwing a Pokeball at " + pokemon[0] + "...")
+				fmt.Println(pokemon[0] + " escaped!")
+			}
 			return nil
 		}
 		return errors.New("Pokemon does not exist, check spelling and try again")
