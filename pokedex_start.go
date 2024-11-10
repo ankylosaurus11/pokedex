@@ -11,6 +11,7 @@ import (
 
 func pokedexStart(cfg config, cache *pokecache.Cache) {
 	scanner := bufio.NewScanner(os.Stdin)
+	caughtPokemon = make(map[string]PokemonData)
 
 	for {
 		fmt.Println("pokedex >")

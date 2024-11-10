@@ -24,6 +24,8 @@ type PokemonData struct {
 	BaseExperience int `json:"base_experience"`
 }
 
+var caughtPokemon map[string]PokemonData
+
 func catch(cfg *config, cache *pokecache.Cache, pokemon ...string) error {
 	url := "https://pokeapi.co/api/v2/pokemon/?limit=1302"
 
@@ -55,10 +57,12 @@ func catch(cfg *config, cache *pokecache.Cache, pokemon ...string) error {
 			if throwPokeBall >= pokemonData.BaseExperience {
 				fmt.Println("Throwing a Pokeball at " + pokemon[0] + "...")
 				fmt.Println(pokemon[0] + " was caught!")
+				caughtPokemon[pokemon[0]] = pokemonData
 			} else {
 				fmt.Println("Throwing a Pokeball at " + pokemon[0] + "...")
 				fmt.Println(pokemon[0] + " escaped!")
 			}
+			fmt.Println(caughtPokemon)
 			return nil
 		}
 		return errors.New("Pokemon does not exist, check spelling and try again")
@@ -97,6 +101,7 @@ func catch(cfg *config, cache *pokecache.Cache, pokemon ...string) error {
 		if throwPokeBall >= pokemonData.BaseExperience {
 			fmt.Println("Throwing a Pokeball at " + pokemon[0] + "...")
 			fmt.Println(pokemon[0] + " was caught!")
+			caughtPokemon[pokemon[0]] = pokemonData
 		} else {
 			fmt.Println("Throwing a Pokeball at " + pokemon[0] + "...")
 			fmt.Println(pokemon[0] + " escaped!")
@@ -109,6 +114,6 @@ func catch(cfg *config, cache *pokecache.Cache, pokemon ...string) error {
 	}
 
 	cache.Add(url, jsonData)
-
+	fmt.Println(caughtPokemon)
 	return nil
 }
