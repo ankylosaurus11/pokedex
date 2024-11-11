@@ -21,12 +21,27 @@ type PokeSuite struct {
 }
 
 type PokemonData struct {
-	BaseExperience int `json:"base_experience"`
+	BaseExperience int     `json:"base_experience"`
+	Stats          []Stats `json:"stats"`
+	Types          []Types `json:"types"`
+}
+
+type Stats struct {
+	BaseStat int `json:"base_stat"`
+	Stat     struct {
+		Name string `json:"name"`
+	} `json:"stat"`
+}
+
+type Types struct {
+	Type struct {
+		Name string `json:"name"`
+	} `json:"type"`
 }
 
 var caughtPokemon map[string]PokemonData
 
-func catch(cfg *config, cache *pokecache.Cache, pokemon ...string) error {
+func catch(_cfg *config, cache *pokecache.Cache, pokemon ...string) error {
 	url := "https://pokeapi.co/api/v2/pokemon/?limit=1302"
 
 	if cacheData, ok := cache.Get(url); ok {
