@@ -74,12 +74,13 @@ func catch(_cfg *config, cache *pokecache.Cache, pokemon ...string) error {
 			if throwPokeBall >= pokemonData.BaseExperience {
 				fmt.Println("Throwing a Pokeball at " + pokemon[0] + "...")
 				fmt.Println(pokemon[0] + " was caught!")
+				fmt.Println("You may now inspect it with the inspect command")
 				caughtPokemon[pokemon[0]] = pokemonData
 			} else {
 				fmt.Println("Throwing a Pokeball at " + pokemon[0] + "...")
 				fmt.Println(pokemon[0] + " escaped!")
 			}
-			fmt.Println(caughtPokemon)
+
 			return nil
 		}
 		return errors.New("Pokemon does not exist, check spelling and try again")
@@ -118,6 +119,7 @@ func catch(_cfg *config, cache *pokecache.Cache, pokemon ...string) error {
 		if throwPokeBall >= pokemonData.BaseExperience {
 			fmt.Println("Throwing a Pokeball at " + pokemon[0] + "...")
 			fmt.Println(pokemon[0] + " was caught!")
+			fmt.Println("You may now inspect it with the inspect command")
 			caughtPokemon[pokemon[0]] = pokemonData
 		} else {
 			fmt.Println("Throwing a Pokeball at " + pokemon[0] + "...")
@@ -131,6 +133,6 @@ func catch(_cfg *config, cache *pokecache.Cache, pokemon ...string) error {
 	}
 
 	cache.Add(url, jsonData)
-	fmt.Println(caughtPokemon)
+
 	return nil
 }
