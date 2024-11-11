@@ -24,6 +24,8 @@ type PokemonData struct {
 	BaseExperience int     `json:"base_experience"`
 	Stats          []Stats `json:"stats"`
 	Types          []Types `json:"types"`
+	Height         int     `json:"height"`
+	Weight         int     `json:"weight"`
 }
 
 type Stats struct {
